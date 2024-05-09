@@ -4,15 +4,24 @@ from get_channel_messages import get_channel_messages, save_messages_to_json
 
 def main():
     channels = [
-        "@habzema21",  # -1001335250788"
-        "@freelance_ethio",  # -1001193582142
-        "@afriworkamharic",  # -1001377094832
-        "leulbrkag",
-        "Ermyas27",
-        "ethiojobsofficial",
-        "condoaddis",
-        "efoyplus",
-        "ETHIOhouseagents"
+        # "@freelance_ethio",
+        # "@afriworkamharic",
+        # "ethiojobsofficial",
+        # "sera7",
+        # "effoyjobs",
+        # "hahujobs",
+        # "ethio_jobs",
+        # "bigdreamET",
+
+        # "leulbrkag",
+        # "Ermyas27",
+        # "condoaddis",
+        # "efoyplus",
+        # "ETHIOhouseagents",
+        # "EthiopianHouses",
+        # "LiveEthio"
+        
+        # "@habzema21",
     ]
     data = {}
     for channel in channels:
