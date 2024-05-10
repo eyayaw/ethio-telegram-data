@@ -7,6 +7,7 @@ from pathlib import Path
 api_id = os.getenv("TELEGRAM_API_ID")
 api_hash = os.getenv("TELEGRAM_API_HASH")
 
+
 async def get_channel_messages(channel, limit=None):
     try:
         client = TelegramClient("anon", api_id, api_hash)
@@ -29,24 +30,30 @@ async def get_channel_messages(channel, limit=None):
     except (errors.TelegramError, ConnectionError) as e:
         raise e
 
+
 def save_messages_to_json(messages, dir="./data", include_timestamp=True):
     if not messages:
         print("No messages to save.")
         return
 
     data = [json.loads(m.to_json(ensure_ascii=False)) for m in messages]
-    # add channel info to data
+    # add channel info to the data
     # TODO: this is a way to get the channel name
 
-    username = messages[0].chat.username.lower() 
+    username = "unknown"
     if messages[0].chat.username:
-        username = username.lower()
+        username = messages[0].chat.username.lower()
     else:
-        username = 'unknown' + datetime.utcnow().strftime("%F%T")
-        print(f"No `username` found, using `{username}`. Please adjust the name manually.")
-    
+        timestamp = datetime.utcnow().strftime("%F%T")
+        username += timestamp
+        print(
+            f"No `username` found, using `{username}`. Please adjust the name manually."
+        )
+
     timestamp = datetime.utcnow().strftime("%F") if include_timestamp else ""
-    filename = Path(dir)/ (f"{username}_{timestamp}.json" if timestamp else f"{username}.json")
+    filename = Path(dir) / (
+        f"{username}_{timestamp}.json" if timestamp else f"{username}.json"
+    )
 
     try:
         Path(dir).mkdir(exist_ok=True)
@@ -57,23 +64,21 @@ def save_messages_to_json(messages, dir="./data", include_timestamp=True):
         raise e
 
 
-
 def get_latest_message_id(file_path):
     try:
-        with open(file_path, 'r', encoding='utf-8') as file:
+        with open(file_path, "r", encoding="utf-8") as file:
             messages = json.load(file)
             if not messages:
                 return None
             # Assuming messages are stored in descending order of IDs
             latest_message = messages[0]
-            return latest_message['id']
+            return latest_message["id"]
     except FileNotFoundError:
         # File not found implies no messages have been saved yet
         return None
     except json.JSONDecodeError as e:
         print(f"Error reading JSON from file: {e}")
         return None
-
 
 
 async def fetch_new_messages(channel, file_path):
@@ -87,9 +92,10 @@ async def fetch_new_messages(channel, file_path):
     new_messages = []
     async for message in client.iter_messages(channel, offset_id=latest_message_id):
         new_messages.append(message)
-    
+
     await client.disconnect()
     return new_messages
+
 
 # Example usage:
 # asyncio.run(get_channel_messages('channel_name'))

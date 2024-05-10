@@ -19,9 +19,12 @@ def main():
         # "efoyplus",
         # "ETHIOhouseagents",
         # "EthiopianHouses",
-        # "LiveEthio"
+        # "LiveEthio",
+
+        # "Car_For_Sale_In_Addis",
         
         # "@habzema21",
+        # "fanatelevision"
     ]
     data = {}
     for channel in channels:
